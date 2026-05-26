@@ -741,9 +741,10 @@ export default function MPRECourseLearningWebsite() {
   }, [firestoreDocRef]);
 
   useEffect(() => {
-    if (isApplyingRemoteData.current) return;
+if (!hasLoadedRemoteData.current && firestoreDocRef) return;
+if (isApplyingRemoteData.current) return;
 
-    setSaveStatus("saving");
+setSaveStatus("saving");
     const timer = window.setTimeout(async () => {
       try {
         if (firestoreDocRef) {
