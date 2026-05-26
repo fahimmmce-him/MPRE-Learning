@@ -1243,13 +1243,22 @@ const courseDashboardRows = useMemo(() => {
                   {editingTopicId === topic.id && topicDraft ? (
                     <div className="space-y-3">
                       <Input value={topicDraft.title} onChange={(v) => setTopicDraft({ ...topicDraft, title: v })} placeholder="ชื่อหัวข้อ" />
-                      <select
-                        value={topicDraft.status}
-                        onChange={(e) => setTopicDraft({ ...topicDraft, status: e.target.value })}
-                        className="relative z-50 w-full rounded-2xl border border-white/10 bg-slate-950/60 p-3 text-sm text-white outline-none ring-cyan-300 focus:ring-2"
-                      >
-                        {statusOptions.map((status) => <option key={status}>{status}</option>)}
-                      </select>
+                      <div className="grid grid-cols-2 gap-2">
+                        {statusOptions.map((status) => (
+                          <button
+                            key={status}
+                            type="button"
+                            onClick={() => setTopicDraft({ ...topicDraft, status })}
+                            className={`rounded-2xl border p-3 text-sm font-semibold transition ${
+                              topicDraft.status === status
+                                ? "border-cyan-300 bg-cyan-400 text-slate-950"
+                                : "border-white/10 bg-slate-950/60 text-white hover:bg-white/10"
+                            }`}
+                          >
+                            {status}
+                          </button>
+                        ))}
+                      </div>
                       <TextArea value={topicDraft.summary} onChange={(v) => setTopicDraft({ ...topicDraft, summary: v })} placeholder="สรุปเนื้อหา" />
                       <Input value={topicDraft.formula} onChange={(v) => setTopicDraft({ ...topicDraft, formula: v })} placeholder="สูตร / keyword สำคัญ" />
                       <Input value={topicDraft.resources} onChange={(v) => setTopicDraft({ ...topicDraft, resources: v })} placeholder="แหล่งเรียนรู้ / link / paper" />
