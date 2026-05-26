@@ -693,6 +693,7 @@ export default function MPRECourseLearningWebsite() {
   }, [firestoreDb]);
   const hasLoadedRemoteData = useRef(false);
   const isApplyingRemoteData = useRef(false);
+  const lastSavedJson = useRef("");
 
   useEffect(() => {
     if (!firestoreDocRef) {
@@ -708,12 +709,16 @@ export default function MPRECourseLearningWebsite() {
       async (snapshot) => {
         try {
           if (snapshot.exists() && Array.isArray(snapshot.data()?.courses)) {
-            isApplyingRemoteData.current = true;
-            setCourses(snapshot.data().courses);
+             isApplyingRemoteData.current = true;
+
+            const remoteCourses = snapshot.data().courses;
+            lastSavedJson.current = JSON.stringify(remoteCourses);
+            setCourses(remoteCourses);
+
             setSaveStatus("saved");
             window.setTimeout(() => {
               isApplyingRemoteData.current = false;
-            }, 0);
+              }, 0);
           } else if (!hasLoadedRemoteData.current) {
             await setDoc(
               firestoreDocRef,
