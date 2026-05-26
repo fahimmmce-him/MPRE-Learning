@@ -806,15 +806,19 @@ export default function MPRECourseLearningWebsite() {
     return stats;
   }, [courses]);
 
-  const courseDashboardRows = useMemo(() => {
-    return courses.map((course) => {
-      const status = getCourseStatus(course);
-      const readTopics = course.topics.filter((topic) => topic.status === "อ่านแล้ว").length;
-      const startedTopics = course.topics.filter((topic) => topic.status !== "ยังไม่เริ่ม").length;
-      const percent = course.topics.length ? Math.round((readTopics / course.topics.length) * 100) : 0;
-      return { ...course, status, readTopics, startedTopics, percent };
-    });
-  }, [courses]);
+const courseDashboardRows = useMemo(() => {
+  return courses.map((course) => {
+    const status = getCourseStatus(course);
+    const readTopics = course.topics.filter((topic) => topic.status === "อ่านแล้ว").length;
+    const startedTopics = course.topics.filter((topic) => topic.status !== "ยังไม่เริ่ม").length;
+
+    const percent = course.topics.length
+      ? Math.round((startedTopics / course.topics.length) * 100)
+      : 0;
+
+    return { ...course, status, readTopics, startedTopics, percent };
+  });
+}, [courses]);
 
   const addCourse = () => {
     const id = Date.now();
