@@ -979,6 +979,13 @@ const courseDashboardRows = useMemo(() => {
               </Button>
             </div>
           </div>
+          
+          <div className="mt-6 flex justify-end">
+            <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/50 backdrop-blur">
+              Developed by Fahim
+            </div>
+          </div>
+          
         </motion.header>
 
         {activePage === "dashboard" ? (
