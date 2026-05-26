@@ -1238,7 +1238,7 @@ const courseDashboardRows = useMemo(() => {
                   key={topic.id}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-[1.5rem] border border-white/10 bg-white/10 p-5 shadow-lg backdrop-blur"
+                  className="relative overflow-visible rounded-[1.5rem] border border-white/10 bg-white/10 p-5 shadow-lg backdrop-blur"
                 >
                   {editingTopicId === topic.id && topicDraft ? (
                     <div className="space-y-3">
@@ -1246,7 +1246,7 @@ const courseDashboardRows = useMemo(() => {
                       <select
                         value={topicDraft.status}
                         onChange={(e) => setTopicDraft({ ...topicDraft, status: e.target.value })}
-                        className="w-full rounded-2xl border border-white/10 bg-slate-950/60 p-3 text-sm text-white outline-none ring-cyan-300 focus:ring-2"
+                        className="relative z-50 w-full rounded-2xl border border-white/10 bg-slate-950/60 p-3 text-sm text-white outline-none ring-cyan-300 focus:ring-2"
                       >
                         {statusOptions.map((status) => <option key={status}>{status}</option>)}
                       </select>
