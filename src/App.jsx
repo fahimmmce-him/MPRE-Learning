@@ -712,9 +712,13 @@ export default function MPRECourseLearningWebsite() {
              isApplyingRemoteData.current = true;
 
             const remoteCourses = snapshot.data().courses;
-            lastSavedJson.current = JSON.stringify(remoteCourses);
-            setCourses(remoteCourses);
-
+            const remoteJson = JSON.stringify(remoteCourses);
+            
+            if (remoteJson !== lastSavedJson.current) {
+              lastSavedJson.current = remoteJson;
+              setCourses(remoteCourses);
+            }
+            
             setSaveStatus("saved");
             window.setTimeout(() => {
               isApplyingRemoteData.current = false;
@@ -746,10 +750,13 @@ export default function MPRECourseLearningWebsite() {
   }, [firestoreDocRef]);
 
   useEffect(() => {
-if (!hasLoadedRemoteData.current && firestoreDocRef) return;
-if (isApplyingRemoteData.current) return;
-
-setSaveStatus("saving");
+    if (!hasLoadedRemoteData.current && firestoreDocRef) return;
+    if (isApplyingRemoteData.current) return;
+  
+    const currentJson = JSON.stringify(courses);
+    if (currentJson === lastSavedJson.current) return;
+  
+    setSaveStatus("saving");
     const timer = window.setTimeout(async () => {
       try {
         if (firestoreDocRef) {
@@ -761,6 +768,7 @@ setSaveStatus("saving");
             },
             { merge: true }
           );
+          lastSavedJson.current = currentJson;
           setSyncMode("firebase");
         } else if (typeof window !== "undefined") {
           window.localStorage.setItem(STORAGE_KEY, JSON.stringify(courses));
@@ -771,7 +779,7 @@ setSaveStatus("saving");
         console.error("Cannot save courses", error);
         setSaveStatus("error");
       }
-    }, 400);
+    }, 1200);
 
     return () => window.clearTimeout(timer);
   }, [courses, firestoreDocRef]);
